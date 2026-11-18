@@ -1,0 +1,11 @@
+services:
+  web:            # React build + nginx (juga bertindak sebagai gateway)
+    build: ./web
+    ports: ["8080:80"]
+    depends_on: [api, tiler]
+  api:            # konten, berita, stasiun, metadata layer
+    build: ./api
+    volumes: ["./data:/data:ro"]
+  tiler:          # TiTiler: COG -> tile XYZ on-the-fly
+    image: ghcr.io/developmentseed/titiler:latest
+    volumes: ["./data:/data:ro"]
